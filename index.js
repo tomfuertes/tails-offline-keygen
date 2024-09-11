@@ -295,12 +295,14 @@ function generateMnemonic() {
           <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
-          <td rowspan="${groupShareCount}" style="white-space: nowrap;">
-            <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
-            <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
-            <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
+          <td rowspan="${groupShareCount}" class="action-cell">
+            <div class="action-buttons">
+              <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
+              <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
+              <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
+            </div>
           </td>
-          <td rowspan="${groupShareCount}">
+          <td rowspan="${groupShareCount}" class="remove-cell">
             <button onclick="removeGroup(${groupIndex})" style="color: red; font-weight: bold; padding: 2px 5px; font-size: 12px;">X</button>
           </td>
         </tr>
@@ -351,6 +353,15 @@ function generateMnemonic() {
         }
         .editable-cell:hover::after {
           opacity: 1;
+        }
+        .action-cell, .remove-cell {
+          vertical-align: top;
+        }
+        .action-buttons {
+          position: sticky;
+          top: 0;
+          padding: 5px 0;
+          background-color: white;
         }
       </style>
     `;
