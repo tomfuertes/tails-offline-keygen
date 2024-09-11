@@ -2,7 +2,7 @@
 
 This project demonstrates the implementation of SLIP-39 (Shamir's Secret Sharing for Mnemonic Codes) in JavaScript, along with address generation for Ethereum and Solana blockchains.
 
-Pages Hosted Demo: _Link_In_Progress_test_
+Pages Hosted Demo: https://tomfuertes.github.io/tails-offline-keygen/
 
 ## Features
 
@@ -68,3 +68,8 @@ node offline.js --guess
 ## License
 
 This project is released under the Unlicense. See the `LICENSE` file for details.
+
+## Inspo / Resources
+
+- https://github.com/iancoleman/bip39/
+- https://github.com/ilap/slip39-js/
