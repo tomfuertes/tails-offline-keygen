@@ -46,7 +46,14 @@
   </head>
   <body>
     <h1>Dice Mnemonic Generator</h1>
+
     <h2 style="color: red">Experimental: Use at your own risk</h2>
+
+    <p>
+      This tool allows you to generate mnemonics and addresses using dice rolls as a source of entropy. You can either
+      input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive ethereum and
+      solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.
+    </p>
 
     <div class="form-group">
       <label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label>
@@ -66,6 +73,12 @@
     <button onclick="generateAddresses()">Generate Addresses</button>
 
     <div id="output"></div>
+
+    <h2>SLIP-39</h2>
+    <p>
+      This section allows you to generate SLIP-39 shares from your mnemonic. SLIP-39 is a method for splitting your seed
+      into multiple shares, which can be used to recover your wallet in case of loss or damage to your primary seed.
+    </p>
 
     <div class="form-group">
       <label for="passphrase">Passphrase (optional):</label>
