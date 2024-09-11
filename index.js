@@ -282,7 +282,8 @@ function generateMnemonic() {
     slip39Output.innerHTML += '<p><strong>Shares:</strong></p>';
 
     // Create a table for the shares
-    let tableHTML = '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th></tr>';
+    let tableHTML =
+      '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th><th>Remove</th></tr>';
 
     slip39Mnemonic.root.children.forEach((group, groupIndex) => {
       const groupThreshold = groups[groupIndex][0];
@@ -299,6 +300,9 @@ function generateMnemonic() {
             <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
             <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
           </td>
+          <td rowspan="${groupShareCount}">
+            <button onclick="removeGroup(${groupIndex})" style="color: red; font-weight: bold; padding: 2px 5px; font-size: 12px;">X</button>
+          </td>
         </tr>
       `;
 
@@ -312,6 +316,16 @@ function generateMnemonic() {
         `;
       }
     });
+
+    // Add a row for adding a new group
+    tableHTML += `
+      <tr>
+        <td colspan="4"></td>
+        <td>
+          <button onclick="addGroup()" style="color: green; font-weight: bold; padding: 2px 5px; font-size: 12px;">✓</button>
+        </td>
+      </tr>
+    `;
 
     tableHTML += '</table>';
     slip39Output.innerHTML += tableHTML;
@@ -342,6 +356,7 @@ let groups = [
   // group: threshold, shareCount, name
   [1, 1, 'Home'],
   [1, 1, 'Work'],
+  [1, 1, 'Bank'],
   [2, 4, 'Friends'],
   [2, 4, 'Family'],
 ];
@@ -384,6 +399,24 @@ function updateGroupThreshold(groupIndex) {
   }
   generateMnemonic();
 }
+
+// Add these new functions
+function removeGroup(groupIndex) {
+  groups.splice(groupIndex, 1);
+  generateMnemonic();
+}
+
+function addGroup() {
+  const lastGroup = groups[groups.length - 1];
+  const newGroup = [...lastGroup]; // Duplicate the last group
+  newGroup[2] = `Group ${groups.length + 1}`; // Update the group name
+  groups.push(newGroup);
+  generateMnemonic();
+}
+
+// Make new functions globally accessible
+window.removeGroup = removeGroup;
+window.addGroup = addGroup;
 
 // Make functions globally accessible
 window.updateGroup = updateGroup;
