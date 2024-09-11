@@ -1,6 +1,6 @@
 {
   "name": "dice-mnemonic-generator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Generate mnemonics and addresses from dice rolls",
   "main": "index.js",
   "scripts": {
