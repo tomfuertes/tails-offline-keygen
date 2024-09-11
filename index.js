@@ -149,7 +149,8 @@ async function generateHTML(addresses, mnemonic) {
     const allAddressesQR = await generateQRCode(
       Object.entries(addressData)
         .map(([type, data]) => `${type} (${data.path}) ${data.address}`)
-        .join('\n')
+        .join('\n'),
+      300
     );
 
     return `
@@ -197,9 +198,9 @@ async function generateHTML(addresses, mnemonic) {
   `;
 }
 
-async function generateQRCode(text) {
+async function generateQRCode(text, size = 150) {
   try {
-    return await QRCode.toDataURL(text);
+    return await QRCode.toDataURL(text, { width: size });
   } catch (err) {
     console.error('Error generating QR code:', err);
     return '';
