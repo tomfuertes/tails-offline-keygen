@@ -2,7 +2,7 @@
 
 This project demonstrates the implementation of SLIP-39 (Shamir's Secret Sharing for Mnemonic Codes) in JavaScript, along with address generation for Ethereum and Solana blockchains.
 
-Pages Hosted Demo: _Link_In_Progress_
+Pages Hosted Demo: _Link_In_Progress_test_
 
 ## Features
 
