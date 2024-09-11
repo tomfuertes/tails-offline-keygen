@@ -292,7 +292,7 @@ function generateMnemonic() {
 
       tableHTML += `
         <tr>
-          <td rowspan="${groupShareCount}" ondblclick="editGroupName(${groupIndex}, this)">${groupIndex + 1} - ${groupName}</td>
+          <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
           <td rowspan="${groupShareCount}" style="white-space: nowrap;">
@@ -329,6 +329,31 @@ function generateMnemonic() {
 
     tableHTML += '</table>';
     slip39Output.innerHTML += tableHTML;
+    slip39Output.innerHTML += `
+      <style>
+        .editable-cell {
+          cursor: pointer;
+          transition: background-color 0.3s;
+          position: relative;
+        }
+        .editable-cell:hover {
+          background-color: #f0f0f0;
+        }
+        .editable-cell::after {
+          content: '✎';
+          position: absolute;
+          top: 2px;
+          right: 2px;
+          font-size: 12px;
+          color: #888;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .editable-cell:hover::after {
+          opacity: 1;
+        }
+      </style>
+    `;
   } catch (error) {
     console.error('Error generating SLIP-39 shares:', error);
     alert('Error generating SLIP-39 shares. Please check the console for details.');

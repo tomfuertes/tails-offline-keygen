@@ -34,7 +34,7 @@
         font-size: 14px;
         color: #666;
         margin-top: 5px;
-      }</style></head><body><h1>Dice Mnemonic Generator</h1><h2 style="color: red">Experimental: Use at your own risk</h2><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div style="text-align: right; margin-bottom: 5px"><a href="#" onclick="generateRandomDice(); return false;">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="3" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script>/******/ (() => { // webpackBootstrap
+      }</style></head><body><h1>Dice Mnemonic Generator</h1><h2 style="color: red">Experimental: Use at your own risk</h2><p>This tool allows you to generate mnemonics and addresses using dice rolls as a source of entropy. You can either input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive ethereum and solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.</p><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div style="text-align: right; margin-bottom: 5px"><a href="#" onclick="generateRandomDice(); return false;">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><h2>SLIP-39</h2><p>This section allows you to generate SLIP-39 shares from your mnemonic. SLIP-39 is a method for splitting your seed into multiple shares, which can be used to recover your wallet in case of loss or damage to your primary seed.</p><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="3" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script>/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7557:
@@ -88526,7 +88526,7 @@ function generateMnemonic() {
 
       tableHTML += `
         <tr>
-          <td rowspan="${groupShareCount}" ondblclick="editGroupName(${groupIndex}, this)">${groupIndex + 1} - ${groupName}</td>
+          <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
           <td rowspan="${groupShareCount}" style="white-space: nowrap;">
@@ -88563,6 +88563,31 @@ function generateMnemonic() {
 
     tableHTML += '</table>';
     slip39Output.innerHTML += tableHTML;
+    slip39Output.innerHTML += `
+      <style>
+        .editable-cell {
+          cursor: pointer;
+          transition: background-color 0.3s;
+          position: relative;
+        }
+        .editable-cell:hover {
+          background-color: #f0f0f0;
+        }
+        .editable-cell::after {
+          content: '✎';
+          position: absolute;
+          top: 2px;
+          right: 2px;
+          font-size: 12px;
+          color: #888;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .editable-cell:hover::after {
+          opacity: 1;
+        }
+      </style>
+    `;
   } catch (error) {
     console.error('Error generating SLIP-39 shares:', error);
     alert('Error generating SLIP-39 shares. Please check the console for details.');
