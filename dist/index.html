@@ -34,7 +34,7 @@
         font-size: 14px;
         color: #666;
         margin-top: 5px;
-      }</style></head><body><h1>Dice Mnemonic Generator</h1><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div style="text-align: right; margin-bottom: 5px"><a href="#" onclick="generateRandomDice(); return false;">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="2" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script>/******/ (() => { // webpackBootstrap
+      }</style></head><body><h1>Dice Mnemonic Generator</h1><h2 style="color: red">Experimental: Use at your own risk</h2><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div style="text-align: right; margin-bottom: 5px"><a href="#" onclick="generateRandomDice(); return false;">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="3" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script>/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7557:
@@ -88516,7 +88516,8 @@ function generateMnemonic() {
     slip39Output.innerHTML += '<p><strong>Shares:</strong></p>';
 
     // Create a table for the shares
-    let tableHTML = '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th></tr>';
+    let tableHTML =
+      '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th><th>Remove</th></tr>';
 
     slip39Mnemonic.root.children.forEach((group, groupIndex) => {
       const groupThreshold = groups[groupIndex][0];
@@ -88525,13 +88526,16 @@ function generateMnemonic() {
 
       tableHTML += `
         <tr>
-          <td rowspan="${groupShareCount}">${groupIndex + 1} - ${groupName}</td>
+          <td rowspan="${groupShareCount}" ondblclick="editGroupName(${groupIndex}, this)">${groupIndex + 1} - ${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
           <td rowspan="${groupShareCount}" style="white-space: nowrap;">
             <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
             <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
             <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
+          </td>
+          <td rowspan="${groupShareCount}">
+            <button onclick="removeGroup(${groupIndex})" style="color: red; font-weight: bold; padding: 2px 5px; font-size: 12px;">X</button>
           </td>
         </tr>
       `;
@@ -88546,6 +88550,16 @@ function generateMnemonic() {
         `;
       }
     });
+
+    // Add a row for adding a new group
+    tableHTML += `
+      <tr>
+        <td colspan="4"></td>
+        <td>
+          <button onclick="addGroup()" style="color: green; font-weight: bold; padding: 2px 5px; font-size: 12px;">✓</button>
+        </td>
+      </tr>
+    `;
 
     tableHTML += '</table>';
     slip39Output.innerHTML += tableHTML;
@@ -88576,6 +88590,7 @@ let groups = [
   // group: threshold, shareCount, name
   [1, 1, 'Home'],
   [1, 1, 'Work'],
+  [1, 1, 'Bank'],
   [2, 4, 'Friends'],
   [2, 4, 'Family'],
 ];
@@ -88619,9 +88634,62 @@ function updateGroupThreshold(groupIndex) {
   generateMnemonic();
 }
 
+// Add these new functions
+function removeGroup(groupIndex) {
+  groups.splice(groupIndex, 1);
+  generateMnemonic();
+}
+
+function addGroup() {
+  const lastGroup = groups[groups.length - 1];
+  const newGroup = [...lastGroup]; // Duplicate the last group
+  newGroup[2] = `Group ${groups.length + 1}`; // Update the group name
+  groups.push(newGroup);
+  generateMnemonic();
+}
+
+// Make new functions globally accessible
+window.removeGroup = removeGroup;
+window.addGroup = addGroup;
+
 // Make functions globally accessible
 window.updateGroup = updateGroup;
 window.updateGroupThreshold = updateGroupThreshold;
+
+// Add this new function to handle group name editing
+function editGroupName(groupIndex, element) {
+  const currentName = groups[groupIndex][2];
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentName;
+  input.style.width = '100%';
+  input.style.boxSizing = 'border-box';
+
+  input.onblur = function () {
+    const newName = this.value.trim();
+    if (newName && newName !== currentName) {
+      groups[groupIndex][2] = newName;
+      generateMnemonic();
+    } else {
+      element.textContent = `${groupIndex + 1} - ${currentName}`;
+    }
+  };
+
+  input.onkeydown = function (event) {
+    if (event.key === 'Enter') {
+      this.blur();
+    } else if (event.key === 'Escape') {
+      element.textContent = `${groupIndex + 1} - ${currentName}`;
+    }
+  };
+
+  element.textContent = '';
+  element.appendChild(input);
+  input.focus();
+}
+
+// Make the new function globally accessible
+window.editGroupName = editGroupName;
 
 })();
 

@@ -292,7 +292,7 @@ function generateMnemonic() {
 
       tableHTML += `
         <tr>
-          <td rowspan="${groupShareCount}">${groupIndex + 1} - ${groupName}</td>
+          <td rowspan="${groupShareCount}" ondblclick="editGroupName(${groupIndex}, this)">${groupIndex + 1} - ${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
           <td rowspan="${groupShareCount}" style="white-space: nowrap;">
@@ -421,3 +421,38 @@ window.addGroup = addGroup;
 // Make functions globally accessible
 window.updateGroup = updateGroup;
 window.updateGroupThreshold = updateGroupThreshold;
+
+// Add this new function to handle group name editing
+function editGroupName(groupIndex, element) {
+  const currentName = groups[groupIndex][2];
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentName;
+  input.style.width = '100%';
+  input.style.boxSizing = 'border-box';
+
+  input.onblur = function () {
+    const newName = this.value.trim();
+    if (newName && newName !== currentName) {
+      groups[groupIndex][2] = newName;
+      generateMnemonic();
+    } else {
+      element.textContent = `${groupIndex + 1} - ${currentName}`;
+    }
+  };
+
+  input.onkeydown = function (event) {
+    if (event.key === 'Enter') {
+      this.blur();
+    } else if (event.key === 'Escape') {
+      element.textContent = `${groupIndex + 1} - ${currentName}`;
+    }
+  };
+
+  element.textContent = '';
+  element.appendChild(input);
+  input.focus();
+}
+
+// Make the new function globally accessible
+window.editGroupName = editGroupName;
