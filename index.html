@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dice Mnemonic Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+      }
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      textarea,
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      textarea {
+        height: 100px;
+        resize: vertical;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+      .counter {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dice Mnemonic Generator</h1>
+
+    <div class="form-group">
+      <label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label>
+      <textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea>
+      <div id="diceCounter" class="counter">0/200 dice rolls</div>
+      <button onclick="generateRandomDice()">Random Dice</button>
+    </div>
+
+    <div class="form-group">
+      <label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label>
+      <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea>
+      <div id="mnemonicCounter" class="counter">0/24 words</div>
+    </div>
+
+    <div class="form-group">
+      <label for="passphrase">Passphrase (optional):</label>
+      <input type="text" id="passphrase" placeholder="Enter passphrase" />
+    </div>
+
+    <div class="form-group">
+      <label for="threshold">Threshold:</label>
+      <input type="number" id="threshold" value="2" min="1" max="16" />
+    </div>
+
+    <button onclick="generateAddresses()">Generate Addresses</button>
+
+    <div id="output"></div>
+    <div id="slip39Output" class="mt-3"></div>
+
+    <script src="bundle.js"></script>
+  </body>
+</html>
