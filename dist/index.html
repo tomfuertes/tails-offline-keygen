@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Dice Mnemonic Generator</title><style>body {
         font-family: Arial, sans-serif;
-        max-width: 600px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
         text-align: center;
@@ -34,7 +34,7 @@
         font-size: 14px;
         color: #666;
         margin-top: 5px;
-      }</style></head><body><h1>Dice Mnemonic Generator</h1><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label> <textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div><button onclick="generateRandomDice()">Random Dice</button></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="2" min="1" max="16"/></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><div id="slip39Output" class="mt-3"></div><script src="bundle.js"></script><script>/******/ (() => { // webpackBootstrap
+      }</style></head><body><h1>Dice Mnemonic Generator</h1><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div style="text-align: right; margin-bottom: 5px"><a href="#" onclick="generateRandomDice(); return false;">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="2" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script src="bundle.js"></script><script>/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7557:
@@ -88416,8 +88416,8 @@ async function generateHTML(addresses, mnemonic) {
       </style>
       ${ethTable}
       ${solanaTable}
-      <h2>Mnemonic</h2>
-      <p>${mnemonic}</p>
+      <!-- <h2>Mnemonic</h2> -->
+      <!-- <p>${mnemonic}</p> -->
     </div>
   `;
 }
@@ -88581,13 +88581,28 @@ let groups = [
 ];
 
 function updateGroup(groupIndex, change) {
-  groups[groupIndex][1] += change;
-  if (groups[groupIndex][1] <= 1) {
-    groups[groupIndex][1] = 1;
-    groups[groupIndex][0] = 1;
-  } else if (groups[groupIndex][0] > groups[groupIndex][1]) {
-    groups[groupIndex][0] = groups[groupIndex][1];
+  const [threshold, shareCount, name] = groups[groupIndex];
+  console.log('updateGroup', name, groupIndex, change);
+
+  if (change > 0 && threshold === shareCount) {
+    // If increasing and threshold equals shareCount, increase both
+    groups[groupIndex][0]++; // Increase threshold
+    groups[groupIndex][1]++; // Increase shareCount
+  } else {
+    // Otherwise, just change the shareCount
+    groups[groupIndex][1] += change;
+
+    // Ensure shareCount is at least 1
+    if (groups[groupIndex][1] < 1) {
+      groups[groupIndex][1] = 1;
+    }
+
+    // Ensure threshold is not greater than shareCount
+    if (groups[groupIndex][0] > groups[groupIndex][1]) {
+      groups[groupIndex][0] = groups[groupIndex][1];
+    }
   }
+
   generateMnemonic();
 }
 

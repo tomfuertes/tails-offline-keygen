@@ -182,8 +182,8 @@ async function generateHTML(addresses, mnemonic) {
       </style>
       ${ethTable}
       ${solanaTable}
-      <h2>Mnemonic</h2>
-      <p>${mnemonic}</p>
+      <!-- <h2>Mnemonic</h2> -->
+      <!-- <p>${mnemonic}</p> -->
     </div>
   `;
 }
@@ -347,13 +347,28 @@ let groups = [
 ];
 
 function updateGroup(groupIndex, change) {
-  groups[groupIndex][1] += change;
-  if (groups[groupIndex][1] <= 1) {
-    groups[groupIndex][1] = 1;
-    groups[groupIndex][0] = 1;
-  } else if (groups[groupIndex][0] > groups[groupIndex][1]) {
-    groups[groupIndex][0] = groups[groupIndex][1];
+  const [threshold, shareCount, name] = groups[groupIndex];
+  console.log('updateGroup', name, groupIndex, change);
+
+  if (change > 0 && threshold === shareCount) {
+    // If increasing and threshold equals shareCount, increase both
+    groups[groupIndex][0]++; // Increase threshold
+    groups[groupIndex][1]++; // Increase shareCount
+  } else {
+    // Otherwise, just change the shareCount
+    groups[groupIndex][1] += change;
+
+    // Ensure shareCount is at least 1
+    if (groups[groupIndex][1] < 1) {
+      groups[groupIndex][1] = 1;
+    }
+
+    // Ensure threshold is not greater than shareCount
+    if (groups[groupIndex][0] > groups[groupIndex][1]) {
+      groups[groupIndex][0] = groups[groupIndex][1];
+    }
   }
+
   generateMnemonic();
 }
 
