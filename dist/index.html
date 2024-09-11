@@ -88379,8 +88379,17 @@ async function generateHTML(addresses, mnemonic) {
   const generateTable = async (title, addressData) => {
     const qrCodes = await Promise.all(Object.values(addressData).map((data) => generateQRCode(data.address)));
 
+    // Generate a single QR code for all addresses
+    const allAddressesQR = await generateQRCode(
+      Object.entries(addressData)
+        .map(([type, data]) => `${type} (${data.path}) ${data.address}`)
+        .join('\n')
+    );
+
     return `
       <h2>${title} Addresses</h2>
+      <h3>All ${title} Addresses QR Code</h3>
+      <img src="${allAddressesQR}" alt="All ${title} Addresses QR">
       <table>
         <tr>
           <th>Type</th>
