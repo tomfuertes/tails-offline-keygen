@@ -107,6 +107,29 @@ function generateAddressesFromMnemonic(mnemonic) {
   // const ethWallet = ethers.Wallet.fromPhrase(mnemonic);
   const seed = bip39.mnemonicToSeedSync(mnemonic);
 
+  // TODO
+  // m/44'/501'
+  // m/44'/501'/0'/0'
+  // m/44'/501'/0'
+  // m/44'/501'/1'/0'
+  // m/44'/501'/1'
+  // m/44'/501'/2'/0'
+  // m/44'/501'/2'
+  // m/44'/501'/3'/0'
+  // m/44'/501'/3'
+
+  // m/44'/60'
+  // m/44'/60'/0'
+  // m/44'/60'/0'/0
+  // m/44'/60'/0'/0/0
+  // m/44'/60'/1'
+  // m/44'/60'/1'/0
+  // m/44'/60'/1'/0/0
+  // m/44'/60'/0'/0/1
+  // m/44'/60'/1'/0/1
+  // m/44'/60'/0'/0/2
+  // m/44'/60'/1'/0
+
   const ethPaths = {
     bip44: "m/44'/60'/0'/0/0",
     ledgerLive: "m/44'/60'/0'/0/0",
