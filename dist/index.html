@@ -1,55 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Dice Mnemonic Generator</title><style>body {
-        font-family: Arial, sans-serif;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        text-align: center;
-      }
-      .form-group {
-        margin-bottom: 20px;
-        text-align: left;
-      }
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      textarea,
-      input {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      textarea {
-        height: 100px;
-        resize: vertical;
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        margin-top: 10px;
-      }
-      .counter {
-        font-size: 14px;
-        color: #666;
-        margin-top: 5px;
-      }
-      .random-dice-container {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .random-dice-link {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #fff;
-        border: none;
-        padding: 5px;
-        font-size: 14px;
-        cursor: pointer;
-      }</style></head><body><h1>Dice Mnemonic Generator</h1><h2 style="color: red">Experimental: Use at your own risk</h2><p>This tool allows you to generate mnemonics and addresses using dice rolls as a source of entropy. You can either input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive ethereum and solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.</p><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div class="random-dice-container"><a href="#" onclick="generateRandomDice(); return false;" class="random-dice-link">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><h2>SLIP-39</h2><p>This section allows you to generate SLIP-39 shares from your mnemonic. SLIP-39 is a method for splitting your seed into multiple shares, which can be used to recover your wallet in case of loss or damage to your primary seed.</p><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="3" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script>/******/ (() => { // webpackBootstrap
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Dice Mnemonic Generator</title><link rel="stylesheet" href="styles.css"/></head><body><h1>Dice Mnemonic Generator</h1><h2 style="color: red">Experimental: Use at your own risk</h2><p>This tool allows you to generate mnemonics and addresses using dice rolls as a source of entropy. You can either input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive ethereum and solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.</p><div class="form-group"><label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label><div class="random-dice-container"><a href="#" onclick="generateRandomDice(); return false;" class="random-dice-link">Random Dice</a></div><textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea><div id="diceCounter" class="counter">0/200 dice rolls</div></div><div class="form-group"><label for="mnemonicInput">Enter mnemonic (or leave empty to generate from dice):</label> <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea><div id="mnemonicCounter" class="counter">0/24 words</div></div><button onclick="generateAddresses()">Generate Addresses</button><div id="output"></div><h2>SLIP-39</h2><p>This section allows you to generate SLIP-39 shares from your mnemonic. SLIP-39 is a method for splitting your seed into multiple shares, which can be used to recover your wallet in case of loss or damage to your primary seed.</p><div class="form-group"><label for="passphrase">Passphrase (optional):</label> <input id="passphrase" placeholder="Enter passphrase"/></div><div class="form-group"><label for="threshold">Threshold:</label> <input type="number" id="threshold" value="3" min="1" max="16"/></div><div id="slip39Output" class="mt-3"></div><script defer="defer">/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7557:
@@ -349,7 +298,60 @@ exports["default"] = u64;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.crypto = void 0;
-exports.crypto = typeof globalThis === 'object' && 'crypto' in globalThis ? globalThis.crypto : undefined;
+exports.crypto = typeof globalThis === 'object' && 'crypto' in globalThis ? globalThis.crypto : <style type="text/css">body {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+textarea,
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.counter {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+.random-dice-container {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+.random-dice-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  border: none;
+  padding: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+</style>;
 //# sourceMappingURL=crypto.js.map
 
 /***/ }),
@@ -1029,7 +1031,7 @@ function hexToBytes(hex) {
     for (let ai = 0, hi = 0; ai < al; ai++, hi += 2) {
         const n1 = asciiToBase16(hex.charCodeAt(hi));
         const n2 = asciiToBase16(hex.charCodeAt(hi + 1));
-        if (n1 === undefined || n2 === undefined) {
+        if (n1 ===  || n2 === undefined) {
             const char = hex[hi] + hex[hi + 1];
             throw new Error('hex string expected, got non-hex character "' + char + '" at index ' + hi);
         }
@@ -77203,10 +77205,6 @@ const LAMPORTS_PER_SOL = 1000000000;
 
 //# sourceMappingURL=index.browser.esm.js.map
 
-// EXTERNAL MODULE: ./node_modules/bip39/src/index.js
-var src = __webpack_require__(749);
-// EXTERNAL MODULE: ./node_modules/ed25519-hd-key/dist/index.js
-var dist = __webpack_require__(7680);
 ;// CONCATENATED MODULE: ./node_modules/ethers/node_modules/@noble/hashes/esm/_assert.js
 function esm_assert_number(n) {
     if (!Number.isSafeInteger(n) || n < 0)
@@ -88241,62 +88239,188 @@ function getIndexedAccountPath(_index) {
     return `m/44'/60'/0'/0/${index}`;
 }
 //# sourceMappingURL=hdwallet.js.map
-// EXTERNAL MODULE: ./node_modules/qrcode/lib/browser.js
-var lib_browser = __webpack_require__(7583);
-// EXTERNAL MODULE: ./node_modules/slip39/index.js
-var slip39 = __webpack_require__(3855);
-;// CONCATENATED MODULE: ./index.js
-/* provided dependency */ var index_Buffer = __webpack_require__(8287)["Buffer"];
+// EXTERNAL MODULE: ./node_modules/ed25519-hd-key/dist/index.js
+var dist = __webpack_require__(7680);
+// EXTERNAL MODULE: ./node_modules/bip39/src/index.js
+var src = __webpack_require__(749);
+;// CONCATENATED MODULE: ./src/utils.js
 
+const ethPaths = {
+    base: "m/44'/60'",
+  bip44: "m/44'/60'/0'/0/0",
+  ledgerLive: "m/44'/60'/0'/0/0",
+  ledgerLegacy: "m/44'/60'/0'",
 
+    // m/44'/60'
+  // m/44'/60'/0'
+  // m/44'/60'/0'/0
+  // m/44'/60'/0'/0/0
+  // m/44'/60'/1'
+  // m/44'/60'/1'/0
+  // m/44'/60'/1'/0/0
+  // m/44'/60'/0'/0/1
+  // m/44'/60'/1'/0/1
+  // m/44'/60'/0'/0/2
+  // m/44'/60'/1'/0
+};
 
+const solanaPaths = {
+  base: "m/44'/501'",
+  ledgerLive: "m/44'/501'/0'",
+  bip44: "m/44'/501'/0'/0'",
+  bip44Change: "m/44'/501'/0'/0'/0'",
+};
 
+function checkInput(type) {
+  const diceInput = document.getElementById('diceInput');
+  const mnemonicInput = document.getElementById('mnemonicInput');
+  const diceCounter = document.getElementById('diceCounter');
+  const mnemonicCounter = document.getElementById('mnemonicCounter');
 
-
-
-// Replace getDiceRolls function with getDiceRoll
-function getDiceRoll() {
-  return document.getElementById('diceInput').value;
+  if (type === 'dice') {
+    diceInput.value = diceInput.value.replace(/[^1-6]/g, '');
+    const diceCount = diceInput.value.length;
+    diceCounter.textContent = `${diceCount}/200 dice rolls`;
+  } else if (type === 'mnemonic') {
+    const wordCount = mnemonicInput.value.trim().split(/\s+/).length;
+    mnemonicCounter.textContent = `${wordCount}/24 words`;
+  }
 }
 
-// Add getMnemonic function
-function getMnemonic() {
-  return document.getElementById('mnemonicInput').value;
+function generateRandomDice() {
+  const diceInput = document.getElementById('diceInput');
+  const mnemonicInput = document.getElementById('mnemonicInput');
+
+  if (diceInput.value.trim() !== '' || mnemonicInput.value.trim() !== '') {
+    alert('Error: Both input fields must be empty to generate random dice rolls.');
+    return;
+  }
+
+  let randomDice = '';
+  for (let i = 0; i < 200; i++) {
+    randomDice += Math.floor(Math.random() * 6) + 1;
+  }
+  diceInput.value = randomDice;
+  checkInput('dice');
 }
 
-// Modify generateAddresses function
-async function generateAddresses() {
-  try {
-    const diceRoll = getDiceRoll();
-    let mnemonic = getMnemonic();
+// Initialize groups as a global variable
+let groups = [
+  // group: threshold, shareCount, name
+  [1, 1, 'Home'],
+  [1, 1, 'Work'],
+  [1, 1, 'Bank'],
+  [2, 4, 'Friends'],
+  [2, 4, 'Family'],
+];
 
-    if (!mnemonic) {
-      if (!diceRoll) {
-        alert('Please enter either a dice roll or a mnemonic.');
-        return;
-      }
-      const bits = diceRollsToBits(diceRoll.split('').map(Number));
-      mnemonic = bitsToMnemonic(bits);
+function updateGroup(groupIndex, change) {
+  const [threshold, shareCount] = groups[groupIndex];
 
-      // Put the generated mnemonic in the textbox
-      document.getElementById('mnemonicInput').value = mnemonic;
+  if (change > 0 && threshold === shareCount) {
+    groups[groupIndex][0]++; // Increase threshold
+    groups[groupIndex][1]++; // Increase shareCount
+  } else {
+    groups[groupIndex][1] += change;
+
+    if (groups[groupIndex][1] < 1) {
+      groups[groupIndex][1] = 1;
     }
 
-    const addresses = generateAddressesFromMnemonic(mnemonic);
-    const html = await generateHTML(addresses, mnemonic);
-
-    document.getElementById('output').innerHTML = html;
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('An error occurred. Please check the console for details.');
+    if (groups[groupIndex][0] > groups[groupIndex][1]) {
+      groups[groupIndex][0] = groups[groupIndex][1];
+    }
   }
-  generateMnemonic();
 }
 
-// Remove main function and file writing operations
+function updateGroupThreshold(groupIndex) {
+  const thresholdInput = document.getElementById(`threshold-${groupIndex}`);
+  const newThreshold = parseInt(thresholdInput.value);
+  const shareCount = groups[groupIndex][1];
 
-// Export the generateAddresses function to make it accessible in the browser
-window.generateAddresses = generateAddresses;
+  if (newThreshold >= 1 && newThreshold <= shareCount) {
+    groups[groupIndex][0] = newThreshold;
+  } else {
+    thresholdInput.value = groups[groupIndex][0];
+  }
+}
+
+function removeGroup(groupIndex) {
+  groups.splice(groupIndex, 1);
+}
+
+function addGroup() {
+  const lastGroup = groups[groups.length - 1];
+  const newGroup = [...lastGroup];
+  newGroup[2] = `Group ${groups.length + 1}`;
+  groups.push(newGroup);
+}
+
+function editGroupName(groupIndex, element) {
+  const currentName = groups[groupIndex][2];
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentName;
+  input.style.width = '100%';
+  input.style.boxSizing = 'border-box';
+
+  input.onblur = function () {
+    const newName = this.value.trim();
+    if (newName && newName !== currentName) {
+      groups[groupIndex][2] = newName;
+    } else {
+      element.textContent = currentName;
+    }
+  };
+
+  input.onkeydown = function (event) {
+    if (event.key === 'Enter') {
+      this.blur();
+    } else if (event.key === 'Escape') {
+      element.textContent = currentName;
+    }
+  };
+
+  element.textContent = '';
+  element.appendChild(input);
+  input.focus();
+}
+
+;// CONCATENATED MODULE: ./src/addressGeneration.js
+/* provided dependency */ var addressGeneration_Buffer = __webpack_require__(8287)["Buffer"];
+
+
+
+
+
+
+function generateAddresses(mnemonic) {
+  const seed = src/* mnemonicToSeedSync */.kw(mnemonic);
+
+  const ethAddresses = Object.fromEntries(
+    Object.entries(ethPaths).map(([key, path]) => [
+      key,
+      { path, address: HDNodeWallet.fromPhrase(mnemonic, path).address },
+    ])
+  );
+
+  const deriveSolanaAddress = (path) => {
+    const derivedSeed = dist.derivePath(path, addressGeneration_Buffer.from(seed, 'hex')).key;
+    const keypair = Keypair.fromSeed(derivedSeed);
+    return keypair.publicKey.toBase58();
+  };
+
+  const solanaAddresses = Object.fromEntries(
+    Object.entries(solanaPaths).map(([key, path]) => [key, { path, address: deriveSolanaAddress(path) }])
+  );
+
+  return { ethAddresses, solanaAddresses };
+}
+
+;// CONCATENATED MODULE: ./src/diceRolls.js
+function getDiceRolls() {
+  return document.getElementById('diceInput').value.split('').map(Number);
+}
 
 function diceRollsToBits(rolls) {
   const rollToBits = {
@@ -88315,6 +88439,14 @@ function diceRollsToBits(rolls) {
   console.log('Last 32 bits:', bits.slice(-32));
   return bits;
 }
+
+// EXTERNAL MODULE: ./node_modules/slip39/index.js
+var slip39 = __webpack_require__(3855);
+;// CONCATENATED MODULE: ./src/mnemonic.js
+
+
+
+
 
 function bitsToMnemonic(bits) {
   console.log('Bits length:', bits.length);
@@ -88352,66 +88484,115 @@ function bitsToMnemonic(bits) {
   return src/* entropyToMnemonic */.VF(entropy);
 }
 
-function generateAddressesFromMnemonic(mnemonic) {
-  // const ethWallet = ethers.Wallet.fromPhrase(mnemonic);
-  const seed = src/* mnemonicToSeedSync */.kw(mnemonic);
-
-  // TODO
-  // m/44'/501'
-  // m/44'/501'/0'/0'
-  // m/44'/501'/0'
-  // m/44'/501'/1'/0'
-  // m/44'/501'/1'
-  // m/44'/501'/2'/0'
-  // m/44'/501'/2'
-  // m/44'/501'/3'/0'
-  // m/44'/501'/3'
-
-  // m/44'/60'
-  // m/44'/60'/0'
-  // m/44'/60'/0'/0
-  // m/44'/60'/0'/0/0
-  // m/44'/60'/1'
-  // m/44'/60'/1'/0
-  // m/44'/60'/1'/0/0
-  // m/44'/60'/0'/0/1
-  // m/44'/60'/1'/0/1
-  // m/44'/60'/0'/0/2
-  // m/44'/60'/1'/0
-
-  const ethPaths = {
-    bip44: "m/44'/60'/0'/0/0",
-    ledgerLive: "m/44'/60'/0'/0/0",
-    ledgerLegacy: "m/44'/60'/0'",
-  };
-
-  const solanaPaths = {
-    bip44: "m/44'/501'/0'/0'",
-    bip44Change: "m/44'/501'/0'/0'/0'",
-    bip44ChangeIndex1: "m/44'/501'/0'/0'/1'",
-    ledgerLive: "m/44'/501'/0'",
-    ledgerLiveIndex1: "m/44'/501'/1'",
-  };
-
-  const ethAddresses = Object.fromEntries(
-    Object.entries(ethPaths).map(([key, path]) => [
-      key,
-      { path, address: HDNodeWallet.fromPhrase(mnemonic, path).address },
-    ])
-  );
-
-  const deriveSolanaAddress = (path) => {
-    const derivedSeed = dist.derivePath(path, index_Buffer.from(seed, 'hex')).key;
-    const keypair = Keypair.fromSeed(derivedSeed);
-    return keypair.publicKey.toBase58();
-  };
-
-  const solanaAddresses = Object.fromEntries(
-    Object.entries(solanaPaths).map(([key, path]) => [key, { path, address: deriveSolanaAddress(path) }])
-  );
-
-  return { ethAddresses, solanaAddresses };
+function getMnemonic() {
+  return document.getElementById('mnemonicInput').value;
 }
+
+function generateMnemonic() {
+  const passphrase = document.getElementById('passphrase').value;
+  const threshold = parseInt(document.getElementById('threshold').value);
+  const sharesElement = document.getElementById('shares');
+  const shares = sharesElement ? parseInt(sharesElement.value) : 2;
+
+  // Use the existing mnemonic or generate one from dice rolls
+  let mnemonic = getMnemonic();
+  if (!mnemonic) {
+    const diceRoll = getDiceRolls();
+    if (!diceRoll) {
+      alert('Please enter either a dice roll or a mnemonic.');
+      return;
+    }
+    const bits = diceRollsToBits(diceRoll.split('').map(Number));
+    mnemonic = bitsToMnemonic(bits);
+  }
+
+  // Get the entropy from the mnemonic
+  const entropy = src/* mnemonicToEntropy */.x2(mnemonic);
+  console.log('entropy', entropy);
+
+  // Convert entropy to Uint8Array
+  const entropyArray = new Uint8Array(entropy.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
+
+  try {
+    // Generate Slip39 shares
+    const slip39Mnemonic = slip39.fromArray(entropyArray, {
+      threshold: threshold,
+      passphrase,
+      shareCount: shares,
+      groups: groups,
+    });
+
+    // Display Slip39 output
+    const slip39Output = document.getElementById('slip39Output');
+    slip39Output.innerHTML = '<h4>Slip39 Output:</h4>';
+    slip39Output.innerHTML += '<p><strong>Entropy:</strong> ' + entropy + '</p>';
+    slip39Output.innerHTML += '<p><strong>Shares:</strong></p>';
+
+    // Create a table for the shares
+    let tableHTML =
+      '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th><th>Remove</th></tr>';
+
+    slip39Mnemonic.root.children.forEach((group, groupIndex) => {
+      const groupThreshold = groups[groupIndex][0];
+      const groupShareCount = groups[groupIndex][1];
+      const groupName = groups[groupIndex][2];
+
+      tableHTML += `
+        <tr>
+          <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
+          <td>${1}</td>
+          <td>${group.children[0].mnemonic}</td>
+          <td rowspan="${groupShareCount}" class="action-cell">
+            <div class="action-buttons">
+              <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
+              <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
+              <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
+            </div>
+          </td>
+          <td rowspan="${groupShareCount}" class="remove-cell">
+            <button onclick="removeGroup(${groupIndex})" style="color: red; font-weight: bold; padding: 2px 5px; font-size: 12px;">X</button>
+          </td>
+        </tr>
+      `;
+
+      // Add nested rows for additional shares
+      for (let shareIndex = 1; shareIndex < groupShareCount; shareIndex++) {
+        tableHTML += `
+          <tr>
+            <td>${shareIndex + 1}</td>
+            <td>${group.children[shareIndex].mnemonic}</td>
+          </tr>
+        `;
+      }
+    });
+
+    // Add a row for adding a new group
+    tableHTML += `
+      <tr>
+        <td colspan="4"></td>
+        <td>
+          <button onclick="addGroup()" style="color: green; font-weight: bold; padding: 2px 5px; font-size: 12px;">✓</button>
+        </td>
+      </tr>
+    `;
+
+    tableHTML += '</table>';
+    slip39Output.innerHTML += tableHTML;
+    slip39Output.innerHTML += `
+      <style>
+        // ... (CSS styles)
+      </style>
+    `;
+  } catch (error) {
+    console.error('Error generating SLIP-39 shares:', error);
+    alert('Error generating SLIP-39 shares. Please check the console for details.');
+  }
+}
+
+// EXTERNAL MODULE: ./node_modules/qrcode/lib/browser.js
+var lib_browser = __webpack_require__(7583);
+;// CONCATENATED MODULE: ./src/htmlGeneration.js
+
 
 async function generateHTML(addresses, mnemonic) {
   const generateTable = async (title, addressData) => {
@@ -88479,304 +88660,66 @@ async function generateQRCode(text, size = 150) {
   }
 }
 
-function checkInput(type) {
-  const diceInput = document.getElementById('diceInput');
-  const mnemonicInput = document.getElementById('mnemonicInput');
-  const diceCounter = document.getElementById('diceCounter');
-  const mnemonicCounter = document.getElementById('mnemonicCounter');
+;// CONCATENATED MODULE: ./src/qrCode.js
 
-  if (type === 'dice') {
-    diceInput.value = diceInput.value.replace(/[^1-6]/g, '');
-    const diceCount = diceInput.value.length;
-    diceCounter.textContent = `${diceCount}/200 dice rolls`;
-  } else if (type === 'mnemonic') {
-    const wordCount = mnemonicInput.value.trim().split(/\s+/).length;
-    mnemonicCounter.textContent = `${wordCount}/24 words`;
+
+async function qrCode_generateQRCode(text, size = 150) {
+  try {
+    return await lib_browser.toDataURL(text, { width: size });
+  } catch (err) {
+    console.error('Error generating QR code:', err);
+    return '';
   }
 }
 
-function generateRandomDice() {
-  const diceInput = document.getElementById('diceInput');
-  const mnemonicInput = document.getElementById('mnemonicInput');
+;// CONCATENATED MODULE: ./src/main.js
 
-  if (diceInput.value.trim() !== '' || mnemonicInput.value.trim() !== '') {
-    alert('Error: Both input fields must be empty to generate random dice rolls.');
-    return;
-  }
 
-  let randomDice = '';
-  for (let i = 0; i < 200; i++) {
-    randomDice += Math.floor(Math.random() * 6) + 1;
-  }
-  diceInput.value = randomDice;
-  checkInput('dice');
-  generateAddresses();
-}
 
-// Make functions globally accessible
+
+
+
+
+// Expose necessary functions to the global scope
+window.getDiceRolls = getDiceRolls;
 window.generateAddresses = generateAddresses;
-window.diceRollsToBits = diceRollsToBits;
-window.bitsToMnemonic = bitsToMnemonic;
-window.generateAddressesFromMnemonic = generateAddressesFromMnemonic;
-window.generateHTML = generateHTML;
-window.generateQRCode = generateQRCode;
 window.checkInput = checkInput;
 window.generateRandomDice = generateRandomDice;
+window.generateMnemonic = generateMnemonic;
+window.diceRollsToBits = diceRollsToBits;
+window.bitsToMnemonic = bitsToMnemonic;
+window.generateHTML = generateHTML;
+window.generateQRCode = qrCode_generateQRCode;
+window.getMnemonic = getMnemonic;
+window.generateMnemonic = generateMnemonic;
 
-function generateMnemonic() {
-  const passphrase = document.getElementById('passphrase').value;
-  const threshold = parseInt(document.getElementById('threshold').value);
-  const sharesElement = document.getElementById('shares');
-  const shares = sharesElement ? parseInt(sharesElement.value) : 2;
-
-  // Use the existing mnemonic or generate one from dice rolls
-  let mnemonic = getMnemonic();
-  if (!mnemonic) {
-    const diceRoll = getDiceRoll();
-    if (!diceRoll) {
-      alert('Please enter either a dice roll or a mnemonic.');
-      return;
-    }
-    const bits = diceRollsToBits(diceRoll.split('').map(Number));
-    mnemonic = bitsToMnemonic(bits);
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+  const generateButton = document.getElementById('generateButton');
+  if (generateButton) {
+    generateButton.addEventListener('click', generateAddresses);
   }
 
-  // Get the entropy from the mnemonic
-  const entropy = src/* mnemonicToEntropy */.x2(mnemonic);
-  console.log('entropy', entropy);
-
-  // Convert entropy to Uint8Array
-  const entropyArray = new Uint8Array(entropy.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
-
-  try {
-    // Generate Slip39 shares
-    const slip39Mnemonic = slip39.fromArray(entropyArray, {
-      threshold: threshold,
-      passphrase,
-      shareCount: shares,
-      groups,
-    });
-
-    // Display Slip39 output
-    const slip39Output = document.getElementById('slip39Output');
-    slip39Output.innerHTML = '<h4>Slip39 Output:</h4>';
-    slip39Output.innerHTML += '<p><strong>Entropy:</strong> ' + entropy + '</p>';
-    slip39Output.innerHTML += '<p><strong>Shares:</strong></p>';
-
-    // Create a table for the shares
-    let tableHTML =
-      '<table border="1"><tr><th>Group</th><th>Share</th><th>Mnemonic</th><th>Action</th><th>Remove</th></tr>';
-
-    slip39Mnemonic.root.children.forEach((group, groupIndex) => {
-      const groupThreshold = groups[groupIndex][0];
-      const groupShareCount = groups[groupIndex][1];
-      const groupName = groups[groupIndex][2];
-
-      tableHTML += `
-        <tr>
-          <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
-          <td>${1}</td>
-          <td>${group.children[0].mnemonic}</td>
-          <td rowspan="${groupShareCount}" class="action-cell">
-            <div class="action-buttons">
-              <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
-              <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
-              <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
-            </div>
-          </td>
-          <td rowspan="${groupShareCount}" class="remove-cell">
-            <button onclick="removeGroup(${groupIndex})" style="color: red; font-weight: bold; padding: 2px 5px; font-size: 12px;">X</button>
-          </td>
-        </tr>
-      `;
-
-      // Add nested rows for additional shares
-      for (let shareIndex = 1; shareIndex < groupShareCount; shareIndex++) {
-        tableHTML += `
-          <tr>
-            <td>${shareIndex + 1}</td>
-            <td>${group.children[shareIndex].mnemonic}</td>
-          </tr>
-        `;
-      }
-    });
-
-    // Add a row for adding a new group
-    tableHTML += `
-      <tr>
-        <td colspan="4"></td>
-        <td>
-          <button onclick="addGroup()" style="color: green; font-weight: bold; padding: 2px 5px; font-size: 12px;">✓</button>
-        </td>
-      </tr>
-    `;
-
-    tableHTML += '</table>';
-    slip39Output.innerHTML += tableHTML;
-    slip39Output.innerHTML += `
-      <style>
-        .editable-cell {
-          cursor: pointer;
-          transition: background-color 0.3s;
-          position: relative;
-        }
-        .editable-cell:hover {
-          background-color: #f0f0f0;
-        }
-        .editable-cell::after {
-          content: '✎';
-          position: absolute;
-          top: 2px;
-          right: 2px;
-          font-size: 12px;
-          color: #888;
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
-        .editable-cell:hover::after {
-          opacity: 1;
-        }
-        .action-cell, .remove-cell {
-          vertical-align: top;
-        }
-        .action-buttons {
-          position: sticky;
-          top: 0;
-          padding: 5px 0;
-          background-color: white;
-        }
-      </style>
-    `;
-  } catch (error) {
-    console.error('Error generating SLIP-39 shares:', error);
-    alert('Error generating SLIP-39 shares. Please check the console for details.');
-  }
-}
-
-function addSubshare(groupIndex) {
-  groups[groupIndex][1]++;
-  generateMnemonic();
-}
-
-// Make addSubshare function globally accessible
-window.addSubshare = addSubshare;
-
-// Add this new function to handle threshold changes
-function handleThresholdChange() {
-  generateMnemonic();
-}
-
-// Add event listener for threshold input
-document.getElementById('threshold').addEventListener('change', handleThresholdChange);
-
-// Define groups as a global variable
-let groups = [
-  // group: threshold, shareCount, name
-  [1, 1, 'Home'],
-  [1, 1, 'Work'],
-  [1, 1, 'Bank'],
-  [2, 4, 'Friends'],
-  [2, 4, 'Family'],
-];
-
-function updateGroup(groupIndex, change) {
-  const [threshold, shareCount, name] = groups[groupIndex];
-  console.log('updateGroup', name, groupIndex, change);
-
-  if (change > 0 && threshold === shareCount) {
-    // If increasing and threshold equals shareCount, increase both
-    groups[groupIndex][0]++; // Increase threshold
-    groups[groupIndex][1]++; // Increase shareCount
-  } else {
-    // Otherwise, just change the shareCount
-    groups[groupIndex][1] += change;
-
-    // Ensure shareCount is at least 1
-    if (groups[groupIndex][1] < 1) {
-      groups[groupIndex][1] = 1;
-    }
-
-    // Ensure threshold is not greater than shareCount
-    if (groups[groupIndex][0] > groups[groupIndex][1]) {
-      groups[groupIndex][0] = groups[groupIndex][1];
-    }
+  const randomDiceButton = document.getElementById('randomDiceButton');
+  if (randomDiceButton) {
+    randomDiceButton.addEventListener('click', generateRandomDice);
   }
 
-  generateMnemonic();
-}
-
-function updateGroupThreshold(groupIndex) {
-  const thresholdInput = document.getElementById(`threshold-${groupIndex}`);
-  const newThreshold = parseInt(thresholdInput.value);
-  const shareCount = groups[groupIndex][1];
-
-  if (newThreshold >= 1 && newThreshold <= shareCount) {
-    groups[groupIndex][0] = newThreshold;
-  } else {
-    thresholdInput.value = groups[groupIndex][0];
+  // Add event listener for threshold input
+  const thresholdInput = document.getElementById('threshold');
+  if (thresholdInput) {
+    thresholdInput.addEventListener('change', generateMnemonic);
   }
-  generateMnemonic();
-}
+});
 
-// Add these new functions
-function removeGroup(groupIndex) {
-  groups.splice(groupIndex, 1);
-  generateMnemonic();
-}
+})();
 
-function addGroup() {
-  const lastGroup = groups[groups.length - 1];
-  const newGroup = [...lastGroup]; // Duplicate the last group
-  newGroup[2] = `Group ${groups.length + 1}`; // Update the group name
-  groups.push(newGroup);
-  generateMnemonic();
-}
-
-// Make new functions globally accessible
-window.removeGroup = removeGroup;
-window.addGroup = addGroup;
-
-// Make functions globally accessible
-window.updateGroup = updateGroup;
-window.updateGroupThreshold = updateGroupThreshold;
-
-// Add this new function to handle group name editing
-function editGroupName(groupIndex, element) {
-  const currentName = groups[groupIndex][2];
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = currentName;
-  input.style.width = '100%';
-  input.style.boxSizing = 'border-box';
-
-  input.onblur = function () {
-    const newName = this.value.trim();
-    if (newName && newName !== currentName) {
-      groups[groupIndex][2] = newName;
-      generateMnemonic();
-    } else {
-      element.textContent = `${groupIndex + 1} - ${currentName}`;
-    }
-  };
-
-  input.onkeydown = function (event) {
-    if (event.key === 'Enter') {
-      this.blur();
-    } else if (event.key === 'Escape') {
-      element.textContent = `${groupIndex + 1} - ${currentName}`;
-    }
-  };
-
-  element.textContent = '';
-  element.appendChild(input);
-  input.focus();
-}
-
-// Make the new function globally accessible
-window.editGroupName = editGroupName;
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+// extracted by mini-css-extract-plugin
 
 })();
 
 /******/ })()
-;
-//# sourceMappingURL=bundle.js.map</script></body></html>
+;</script></body></html>

@@ -1,10 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
+const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
 
 module.exports = {
-  entry: './index.js',
+  entry: ['./src/main.js', './src/styles.css'],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -20,19 +22,36 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
-      inject: 'body',
+      template: 'src/index.html',
+      inject: "body"
     }),
-    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/bundle/]),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+    new HTMLInlineCSSWebpackPlugin({
+      replace: {removeTarget: true}
+    }),
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new HtmlInlineScriptPlugin(),
   ],
   optimization: {
     minimize: false,
   },
-  devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ],
+      },
+    ],
+  },
 };
