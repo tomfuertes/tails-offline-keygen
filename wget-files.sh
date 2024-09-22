@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 
-echo "Are you CDed into the transient USB volume/directory? Continue y/N?"
+echo "Are you CDed into the transient USB volume/directory? Type y <enter> to confirm"
 read -r answer
 if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
   echo "Continuing..."
 else
   echo "Aborting..."
-  exit 1
+  exit 0
 fi
 
 echo "Downloading Node.js"
@@ -26,7 +26,7 @@ echo "Download RocketPool"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/rocket-pool/smartnode-install/releases/latest/download/rocketpool-cli-linux-amd64
 
 echo "Download wagyu"
-curl -s https://wagyu.gg/ | grep -oP 'href="\K[^"]+\.AppImage' | while read -r link; do curl -O "$link"; done
+curl -s https://wagyu.gg/ | grep -o 'href="[^"]*\.AppImage"' | sed 's/href="//;s/"$//' | while read -r link; do curl -O "$link"; done
 
 echo "Downloading Ian Coleman Shamir"
 curl -s -o ian-shamir.html https://iancoleman.io/shamir/
@@ -66,4 +66,4 @@ cd js || exit
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/jquery-3.2.1.js
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/slip39-libs.js
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/index.js
-cd ..
+cd ../
