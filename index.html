@@ -57,6 +57,118 @@
         font-size: 14px;
         cursor: pointer;
       }
+      /* Notification container styling */
+      #notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        z-index: 1000;
+      }
+
+      /* Notification message styling */
+      .notification-message {
+        position: relative;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s;
+      }
+
+      .notification-success {
+        background-color: #4caf50;
+      }
+
+      .notification-warning {
+        background-color: #ff9800;
+      }
+
+      .notification-error {
+        background-color: #f44336;
+      }
+      .notification-success::before {
+        content: '✔️';
+      }
+      .notification-error::before {
+        content: '❌';
+      }
+
+      /* Close button styling */
+      .notification-close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .notification-close:hover {
+        color: #000;
+      }
+
+      /* Fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      table {
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+      img {
+        width: 150px;
+        height: 150px;
+      }
+
+      .editable-cell {
+        cursor: pointer;
+        transition: background-color 0.3s;
+        position: relative;
+      }
+      .editable-cell:hover {
+        background-color: #f0f0f0;
+      }
+      .editable-cell::after {
+        content: '✎';
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 12px;
+        color: #888;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .editable-cell:hover::after {
+        opacity: 1;
+      }
+      .action-cell,
+      .remove-cell {
+        vertical-align: top;
+      }
+      .action-buttons {
+        position: sticky;
+        top: 0;
+        padding: 5px 0;
+        background-color: white;
+      }
     </style>
   </head>
   <body>
@@ -66,8 +178,8 @@
 
     <p>
       This tool allows you to generate mnemonics and addresses using dice rolls as a source of entropy. You can either
-      input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive ethereum and
-      solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.
+      input your own dice rolls or use the tool to generate a mnemonic, which can then be used to derive Ethereum and
+      Solana addresses. The tool also supports SLIP-39 for creating backup shares of your seed.
     </p>
 
     <div class="form-group">
@@ -84,6 +196,9 @@
       <textarea id="mnemonicInput" placeholder="Enter your mnemonic phrase" onkeyup="checkInput('mnemonic')"></textarea>
       <div id="mnemonicCounter" class="counter">0/24 words</div>
     </div>
+
+    <!-- Notification Container -->
+    <div id="notification" style="display: none"></div>
 
     <button onclick="generateAddresses()">Generate Addresses</button>
 

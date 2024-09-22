@@ -5,6 +5,16 @@ import { ethers } from 'ethers';
 import QRCode from 'qrcode';
 import * as slip39 from 'slip39';
 
+// Define future slip39 groups as a global variable (configurable in ui after first gen)
+let groups = [
+  // group: threshold, shareCount, name
+  [1, 1, 'Home'],
+  [1, 1, 'Work'],
+  [1, 1, 'Bank'],
+  [2, 4, 'Friends'],
+  [2, 4, 'Family'],
+];
+
 // Replace getDiceRolls function with getDiceRoll
 function getDiceRoll() {
   return document.getElementById('diceInput').value;
@@ -15,15 +25,28 @@ function getMnemonic() {
   return document.getElementById('mnemonicInput').value;
 }
 
+function validateDiceRoll(diceRoll) {
+  const valid = /^[1-6]{1,200}$/.test(diceRoll);
+  if (!valid) {
+    showNotification('Dice rolls must be between 1 and 6 and up to 200 rolls.', 'error');
+  }
+  return valid;
+}
+
 // Modify generateAddresses function
 async function generateAddresses() {
   try {
+    clearNotifications();
     const diceRoll = getDiceRoll();
     let mnemonic = getMnemonic();
 
     if (!mnemonic) {
       if (!diceRoll) {
-        alert('Please enter either a dice roll or a mnemonic.');
+        showNotification('Please enter either a dice roll or a mnemonic.', 'error');
+        return;
+      }
+      if (!validateDiceRoll(diceRoll)) {
+        showNotification('Invalid dice roll. Please check and try again.', 'error');
         return;
       }
       const bits = diceRollsToBits(diceRoll.split('').map(Number));
@@ -31,23 +54,61 @@ async function generateAddresses() {
 
       // Put the generated mnemonic in the textbox
       document.getElementById('mnemonicInput').value = mnemonic;
+      showNotification('Mnemonic generated from dice rolls.', 'success');
+    } else {
+      // Validate and correct the mnemonic
+      const wordlist = bip39.wordlists.english;
+
+      const words = mnemonic.toLowerCase().trim().split(/\s+/);
+      let corrected = false;
+
+      const correctedWords = words.map((word) => {
+        if (wordlist.indexOf(word) === -1) {
+          // Word not found in wordlist, try to find a close match
+          const closestMatch = findClosestMatch(word, wordlist);
+          if (closestMatch) {
+            corrected = true;
+            return { original: word, corrected: closestMatch };
+          }
+        }
+        return { original: word, corrected: word };
+      });
+
+      mnemonic = correctedWords.map((w) => w.corrected).join(' ');
+
+      if (corrected) {
+        document.getElementById('mnemonicInput').value = mnemonic;
+        const corrections = correctedWords
+          .filter((w) => w.original !== w.corrected)
+          .map((w) => `"${w.original}" to "${w.corrected}"`)
+          .join(', ');
+        showNotification(`Some words in the mnemonic were corrected: ${corrections}. Please verify.`, 'warning');
+      }
+
+      if (!bip39.validateMnemonic(mnemonic)) {
+        const invalidWords = words.filter((word) => !wordlist.includes(word));
+
+        if (invalidWords.length > 0) {
+          const invalidWordList = invalidWords.join(', ');
+          showNotification(`Invalid word(s) in mnemonic: ${invalidWordList}. Please check and try again.`, 'error');
+        } else {
+          showNotification('Invalid mnemonic. Please check and try again.', 'error');
+        }
+        return;
+      }
     }
 
     const addresses = generateAddressesFromMnemonic(mnemonic);
-    const html = await generateHTML(addresses, mnemonic);
+    const html = await generateHTML(addresses);
 
     document.getElementById('output').innerHTML = html;
+    showNotification('Addresses generated successfully.', 'success');
   } catch (error) {
     console.error('An error occurred:', error);
-    alert('An error occurred. Please check the console for details.');
+    showNotification(`An error occurred: ${error.message}`, 'error');
   }
   generateMnemonic();
 }
-
-// Remove main function and file writing operations
-
-// Export the generateAddresses function to make it accessible in the browser
-window.generateAddresses = generateAddresses;
 
 function diceRollsToBits(rolls) {
   const rollToBits = {
@@ -107,42 +168,34 @@ function generateAddressesFromMnemonic(mnemonic) {
   // const ethWallet = ethers.Wallet.fromPhrase(mnemonic);
   const seed = bip39.mnemonicToSeedSync(mnemonic);
 
-  // TODO
-  // m/44'/501'
-  // m/44'/501'/0'/0'
-  // m/44'/501'/0'
-  // m/44'/501'/1'/0'
-  // m/44'/501'/1'
-  // m/44'/501'/2'/0'
-  // m/44'/501'/2'
-  // m/44'/501'/3'/0'
-  // m/44'/501'/3'
-
-  // m/44'/60'
-  // m/44'/60'/0'
-  // m/44'/60'/0'/0
-  // m/44'/60'/0'/0/0
-  // m/44'/60'/1'
-  // m/44'/60'/1'/0
-  // m/44'/60'/1'/0/0
-  // m/44'/60'/0'/0/1
-  // m/44'/60'/1'/0/1
-  // m/44'/60'/0'/0/2
-  // m/44'/60'/1'/0
-
   const ethPaths = {
-    bip44: "m/44'/60'/0'/0/0",
-    none: "m/44'/60'",
-    ledgerLegacy: "m/44'/60'/0'",
-    two: "m/44'/60'/0'/0",
+    'BIP44 Root': "m/44'/60'",
+    'Account 0': "m/44'/60'/0'",
+    'Account 0 External': "m/44'/60'/0'/0",
+    'Account 0 External 0': "m/44'/60'/0'/0/0",
+    'Account 1': "m/44'/60'/1'",
+    'Account 1 External': "m/44'/60'/1'/0",
+    'Account 1 External 0': "m/44'/60'/1'/0/0",
+    'Account 0 External 1': "m/44'/60'/0'/0/1",
+    'Account 1 External 1': "m/44'/60'/1'/0/1",
+    'Account 0 External 2': "m/44'/60'/0'/0/2",
+    'Ledger Legacy': "m/44'/60'/0'",
   };
 
   const solanaPaths = {
-    bip44: "m/44'/501'/0'/0'",
-    bip44Change: "m/44'/501'/0'/0'/0'",
-    bip44ChangeIndex1: "m/44'/501'/0'/0'/1'",
-    ledgerLive: "m/44'/501'/0'",
-    ledgerLiveIndex1: "m/44'/501'/1'",
+    'BIP44 Root': "m/44'/501'",
+    'Account 0': "m/44'/501'/0'",
+    'Account 0 External': "m/44'/501'/0'/0'",
+    'Account 1': "m/44'/501'/1'",
+    'Account 1 External': "m/44'/501'/1'/0'",
+    'Account 2': "m/44'/501'/2'",
+    'Account 2 External': "m/44'/501'/2'/0'",
+    'Account 3': "m/44'/501'/3'",
+    'Account 3 External': "m/44'/501'/3'/0'",
+    'Change Address': "m/44'/501'/0'/0'/0'",
+    'Change Address Index 1': "m/44'/501'/0'/0'/1'",
+    'Ledger Live': "m/44'/501'/0'",
+    'Ledger Live Index 1': "m/44'/501'/1'",
   };
 
   const ethAddresses = Object.fromEntries(
@@ -153,7 +206,7 @@ function generateAddressesFromMnemonic(mnemonic) {
   );
 
   const deriveSolanaAddress = (path) => {
-    const derivedSeed = ed25519.derivePath(path, Buffer.from(seed, 'hex')).key;
+    const derivedSeed = ed25519.derivePath(path, seed.toString('hex')).key;
     const keypair = Keypair.fromSeed(derivedSeed);
     return keypair.publicKey.toBase58();
   };
@@ -165,22 +218,23 @@ function generateAddressesFromMnemonic(mnemonic) {
   return { ethAddresses, solanaAddresses };
 }
 
-async function generateHTML(addresses, mnemonic) {
+async function generateHTML(addresses) {
   const generateTable = async (title, addressData) => {
     const qrCodes = await Promise.all(Object.values(addressData).map((data) => generateQRCode(data.address)));
 
     // Generate a single QR code for all addresses
     const allAddressesQR = await generateQRCode(
       Object.entries(addressData)
-        .map(([type, data]) => `${type} (${data.path}) ${data.address}`)
+        // eslint-disable-next-line no-unused-vars
+        .map(([_, data]) => `- ${data.path}: ${data.address}`)
         .join('\n'),
-      300
+      500
     );
 
     return `
       <h2>${title} Addresses</h2>
       <h3>All ${title} Addresses QR Code</h3>
-      <img src="${allAddressesQR}" alt="All ${title} Addresses QR">
+      <img src="${allAddressesQR}" alt="All ${title} Addresses QR" style="width: 500px; height: 500px;">
       <table>
         <tr>
           <th>Type</th>
@@ -209,15 +263,8 @@ async function generateHTML(addresses, mnemonic) {
 
   return `
     <div style="display: flex; flex-direction: column; align-items: center;">
-      <style>
-        table { border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid black; padding: 10px; text-align: center; }
-        img { width: 150px; height: 150px; }
-      </style>
       ${ethTable}
       ${solanaTable}
-      <!-- <h2>Mnemonic</h2> -->
-      <!-- <p>${mnemonic}</p> -->
     </div>
   `;
 }
@@ -252,7 +299,7 @@ function generateRandomDice() {
   const mnemonicInput = document.getElementById('mnemonicInput');
 
   if (diceInput.value.trim() !== '' || mnemonicInput.value.trim() !== '') {
-    alert('Error: Both input fields must be empty to generate random dice rolls.');
+    showNotification('Both input fields must be empty to generate random dice rolls.', 'warning');
     return;
   }
 
@@ -263,6 +310,7 @@ function generateRandomDice() {
   diceInput.value = randomDice;
   checkInput('dice');
   generateAddresses();
+  showNotification('Random dice rolls generated successfully.', 'success');
 }
 
 // Make functions globally accessible
@@ -286,7 +334,7 @@ function generateMnemonic() {
   if (!mnemonic) {
     const diceRoll = getDiceRoll();
     if (!diceRoll) {
-      alert('Please enter either a dice roll or a mnemonic.');
+      showNotification('Please enter either a dice roll or a mnemonic.', 'error');
       return;
     }
     const bits = diceRollsToBits(diceRoll.split('').map(Number));
@@ -298,9 +346,14 @@ function generateMnemonic() {
   console.log('entropy', entropy);
 
   // Convert entropy to Uint8Array
-  const entropyArray = new Uint8Array(entropy.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
+  const entropyArray = new Uint8Array(32); // Corrected to 32 bytes
+  for (let i = 0; i < 32; i++) {
+    entropyArray[i] = parseInt(entropy.slice(i * 2, i * 2 + 2), 16);
+  }
 
   try {
+    // clearNotifications(); // Clear any existing notifications
+
     // Generate Slip39 shares
     const slip39Mnemonic = slip39.fromArray(entropyArray, {
       threshold: threshold,
@@ -365,43 +418,10 @@ function generateMnemonic() {
 
     tableHTML += '</table>';
     slip39Output.innerHTML += tableHTML;
-    slip39Output.innerHTML += `
-      <style>
-        .editable-cell {
-          cursor: pointer;
-          transition: background-color 0.3s;
-          position: relative;
-        }
-        .editable-cell:hover {
-          background-color: #f0f0f0;
-        }
-        .editable-cell::after {
-          content: '✎';
-          position: absolute;
-          top: 2px;
-          right: 2px;
-          font-size: 12px;
-          color: #888;
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
-        .editable-cell:hover::after {
-          opacity: 1;
-        }
-        .action-cell, .remove-cell {
-          vertical-align: top;
-        }
-        .action-buttons {
-          position: sticky;
-          top: 0;
-          padding: 5px 0;
-          background-color: white;
-        }
-      </style>
-    `;
+    showNotification('SLIP-39 shares generated successfully.', 'success');
   } catch (error) {
     console.error('Error generating SLIP-39 shares:', error);
-    alert('Error generating SLIP-39 shares. Please check the console for details.');
+    showNotification(`Error generating SLIP-39 shares: ${error.message}`, 'error');
   }
 }
 
@@ -419,17 +439,12 @@ function handleThresholdChange() {
 }
 
 // Add event listener for threshold input
-document.getElementById('threshold').addEventListener('change', handleThresholdChange);
-
-// Define groups as a global variable
-let groups = [
-  // group: threshold, shareCount, name
-  [1, 1, 'Home'],
-  [1, 1, 'Work'],
-  [1, 1, 'Bank'],
-  [2, 4, 'Friends'],
-  [2, 4, 'Family'],
-];
+document.addEventListener('DOMContentLoaded', () => {
+  const thresholdElement = document.getElementById('threshold');
+  if (thresholdElement) {
+    thresholdElement.addEventListener('change', handleThresholdChange);
+  }
+});
 
 function updateGroup(groupIndex, change) {
   const [threshold, shareCount, name] = groups[groupIndex];
@@ -526,3 +541,131 @@ function editGroupName(groupIndex, element) {
 
 // Make the new function globally accessible
 window.editGroupName = editGroupName;
+
+/**
+ * Show a notification message.
+ * @param {string} message - The message to display.
+ * @param {string} type - The type of notification ('success', 'warning', 'error').
+ */
+function showNotification(message, type = 'error') {
+  const notificationContainer = document.getElementById('notification');
+  if (notificationContainer) {
+    // Create a new notification message element
+    const notificationMessage = document.createElement('div');
+    notificationMessage.classList.add('notification-message', `notification-${type}`);
+
+    // Create the message text
+    const messageText = document.createElement('span');
+    messageText.textContent = message;
+
+    // Create the close button
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('notification-close');
+    closeButton.innerHTML = '&times;'; // × symbol
+
+    // Add event listener to remove the notification when the close button is clicked
+    closeButton.addEventListener('click', () => {
+      notificationContainer.removeChild(notificationMessage);
+      if (notificationContainer.children.length === 0) {
+        notificationContainer.style.display = 'none';
+      }
+    });
+
+    // Append message text and close button to the notification message
+    notificationMessage.appendChild(messageText);
+    notificationMessage.appendChild(closeButton);
+
+    // Append the new notification message to the container
+    notificationContainer.appendChild(notificationMessage);
+    notificationContainer.style.display = 'block';
+
+    // If the notification is of type 'success', set a timeout to remove it after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        if (notificationContainer.contains(notificationMessage)) {
+          notificationContainer.removeChild(notificationMessage);
+          if (notificationContainer.children.length === 0) {
+            notificationContainer.style.display = 'none';
+          }
+        }
+      }, 3000);
+    }
+  } else {
+    console.error('Notification container with id "notification" not found.');
+  }
+}
+/**
+ * Clear all notifications.
+ */
+function clearNotifications() {
+  const notificationContainer = document.getElementById('notification');
+  if (notificationContainer) {
+    // Remove all child elements (notifications)
+    notificationContainer.innerHTML = '';
+    notificationContainer.style.display = 'none';
+  }
+}
+
+function findClosestMatch(word, wordlist) {
+  // Only consider partial matches for words with 4 or more letters
+  if (word.length >= 4) {
+    const partialMatches = wordlist.filter((dictWord) => dictWord.startsWith(word));
+    if (partialMatches.length > 0) {
+      // If there are partial matches, return the shortest one
+      return partialMatches.reduce((shortest, current) => (current.length < shortest.length ? current : shortest));
+    }
+  }
+
+  // If no partial match is found or word is shorter than 4 letters,
+  // proceed with Levenshtein distance
+  let closestWord = null;
+  let minDistance = Infinity;
+
+  for (const dictWord of wordlist) {
+    const distance = levenshteinDistance(word, dictWord);
+    if (distance < minDistance || (distance === minDistance && dictWord.length < closestWord.length)) {
+      minDistance = distance;
+      closestWord = dictWord;
+    }
+  }
+
+  // Only return a match if it's reasonably close (e.g., distance <= 2)
+  return minDistance <= 2 ? closestWord : null;
+}
+
+function levenshteinDistance(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix = [];
+
+  // Increment along the first column of each row
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  // Increment each column in the first row
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1, // insertion
+          matrix[i - 1][j] + 1 // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+// Make the function globally accessible
+window.findClosestMatch = findClosestMatch;
