@@ -95,6 +95,8 @@ async function generateAddresses() {
           showNotification('Invalid mnemonic. Please check and try again.', 'error');
         }
         return;
+      } else {
+        showNotification('Valid mnemonic.', 'success');
       }
     }
 
@@ -589,17 +591,17 @@ function showNotification(message, type = 'error') {
     notificationContainer.appendChild(notificationMessage);
     notificationContainer.style.display = 'block';
 
-    // If the notification is of type 'success', set a timeout to remove it after 5 seconds
-    if (type === 'success') {
-      setTimeout(() => {
-        if (notificationContainer.contains(notificationMessage)) {
-          notificationContainer.removeChild(notificationMessage);
-          if (notificationContainer.children.length === 0) {
-            notificationContainer.style.display = 'none';
-          }
-        }
-      }, 3000);
-    }
+    // // If the notification is of type 'success', set a timeout to remove it after 5 seconds
+    // if (type === 'success') {
+    //   setTimeout(() => {
+    //     if (notificationContainer.contains(notificationMessage)) {
+    //       notificationContainer.removeChild(notificationMessage);
+    //       if (notificationContainer.children.length === 0) {
+    //         notificationContainer.style.display = 'none';
+    //       }
+    //     }
+    //   }, 3000);
+    // }
   } else {
     console.error('Notification container with id "notification" not found.');
   }
