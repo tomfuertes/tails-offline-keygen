@@ -34,6 +34,6 @@ export default [
     
   },
   {
-    ignores: ['dist', '**/node_modules/**', '**/*.min.js', '**/*.config.{js,mjs}'],
+    ignores: ['dist', 'test-wget', '**/node_modules/**', '**/*.min.js', '**/*.config.{js,mjs}'],
   }
 ];
