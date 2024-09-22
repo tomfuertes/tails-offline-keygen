@@ -8,6 +8,7 @@ If you're using tails and want a lot of open source tools on a usb you can also:
 
 ```
 # Download offline files to USB
+# Requires wget installed
 curl -s https://raw.githubusercontent.com/tomfuertes/tails-offline-keygen/main/wget-files.sh | bash
 ```
 
