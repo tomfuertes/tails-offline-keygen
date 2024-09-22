@@ -4,6 +4,13 @@ This project demonstrates the implementation of SLIP-39 (Shamir's Secret Sharing
 
 Pages Hosted Demo: https://tomfuertes.github.io/tails-offline-keygen/
 
+If you're using tails and want a lot of open source tools on a usb you can also:
+
+```
+# Download offline files to USB
+curl -s https://raw.githubusercontent.com/tomfuertes/tails-offline-keygen/main/wget-files.sh | bash
+```
+
 ## Features
 
 - Generate mnemonics from dice rolls or use existing mnemonics
