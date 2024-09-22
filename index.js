@@ -326,8 +326,6 @@ window.generateRandomDice = generateRandomDice;
 function generateMnemonic() {
   const passphrase = document.getElementById('passphrase').value;
   const threshold = parseInt(document.getElementById('threshold').value);
-  const sharesElement = document.getElementById('shares');
-  const shares = sharesElement ? parseInt(sharesElement.value) : 2;
 
   // Use the existing mnemonic or generate one from dice rolls
   let mnemonic = getMnemonic();
@@ -345,20 +343,32 @@ function generateMnemonic() {
   const entropy = bip39.mnemonicToEntropy(mnemonic);
   console.log('entropy', entropy);
 
-  // Convert entropy to Uint8Array
-  const entropyArray = new Uint8Array(32); // Corrected to 32 bytes
-  for (let i = 0; i < 32; i++) {
-    entropyArray[i] = parseInt(entropy.slice(i * 2, i * 2 + 2), 16);
+  // Convert hex string to byte array
+  function hexToByteArray(hexString) {
+    const result = [];
+    for (let i = 0; i < hexString.length; i += 2) {
+      result.push(parseInt(hexString.substr(i, 2), 16));
+    }
+    return result;
   }
+
+  // Convert entropy to byte array
+  const entropyArray = hexToByteArray(entropy);
+  console.log('entropyArray', entropyArray);
 
   try {
     // clearNotifications(); // Clear any existing notifications
 
+    console.log('slip39 config', {
+      entropyArray,
+      threshold: threshold,
+      passphrase,
+      groups,
+    });
     // Generate Slip39 shares
     const slip39Mnemonic = slip39.fromArray(entropyArray, {
       threshold: threshold,
       passphrase,
-      shareCount: shares,
       groups,
     });
 
@@ -382,10 +392,10 @@ function generateMnemonic() {
           <td rowspan="${groupShareCount}" class="editable-cell" ondblclick="editGroupName(${groupIndex}, this)">${groupName}</td>
           <td>${1}</td>
           <td>${group.children[0].mnemonic}</td>
-          <td rowspan="${groupShareCount}" class="action-cell">
-            <div class="action-buttons">
+          <td rowspan="${groupShareCount}" class="action-cell" style="white-space: nowrap; min-width: 120px;">
+            <div class="action-buttons" style="display: flex; justify-content: space-between; align-items: center;">
               <button onclick="updateGroup(${groupIndex}, -1)" ${groupShareCount <= 1 ? 'disabled' : ''} style="padding: 2px 5px; font-size: 12px;">-</button>
-              <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 30px; padding: 2px; font-size: 12px;">
+              <input type="number" id="threshold-${groupIndex}" value="${groupThreshold}" min="1" max="${groupShareCount}" onchange="updateGroupThreshold(${groupIndex})" style="width: 40px; padding: 2px; font-size: 12px; text-align: center;">
               <button onclick="updateGroup(${groupIndex}, 1)" style="padding: 2px 5px; font-size: 12px;">+</button>
             </div>
           </td>
