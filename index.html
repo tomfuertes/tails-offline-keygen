@@ -42,20 +42,7 @@
         color: #666;
         margin-top: 5px;
       }
-      .random-dice-container {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-      }
       .random-dice-link {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #fff;
-        border: none;
-        padding: 5px;
-        font-size: 14px;
-        cursor: pointer;
       }
       /* Notification container styling */
       #notification {
@@ -185,10 +172,10 @@
     </p>
 
     <div class="form-group">
-      <label for="diceInput">Enter dice rolls (or leave empty to use mnemonic):</label>
-      <div class="random-dice-container">
-        <a href="#" onclick="generateRandomDice(); return false;" class="random-dice-link">Random Dice</a>
-      </div>
+      <label for="diceInput"
+        >Enter dice rolls (or
+        <a href="#" onclick="generateRandomDice(); return false;" class="random-dice-link">Random Dice</a>):</label
+      >
       <textarea id="diceInput" placeholder="e.g., 123456" onkeyup="checkInput('dice')" maxlength="200"></textarea>
       <div id="diceCounter" class="counter">0/200 dice rolls</div>
     </div>
