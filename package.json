@@ -12,7 +12,8 @@
     "publish": "npm run publish:patch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev": "webpack --watch"
   },
   "dependencies": {
     "@solana/web3.js": "^1.87.6",
