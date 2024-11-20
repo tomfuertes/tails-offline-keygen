@@ -10,8 +10,8 @@ wget -q --show-progress --max-redirect=20 --no-server-response --content-disposi
 echo "Download RocketPool"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/rocket-pool/smartnode-install/releases/latest/download/rocketpool-cli-linux-amd64
 
-echo "Download wagyu"
-curl -s https://wagyu.gg/ | grep -o 'href="[^"]*\.AppImage"' | sed 's/href="//;s/"$//' | while read -r link; do curl -O "$link"; done
+# echo "Download wagyu"
+# curl -s https://wagyu.gg/ | grep -o 'href="[^"]*\.AppImage"' | sed 's/href="//;s/"$//' | while read -r link; do curl -O "$link"; done
 
 echo "Downloading Ian Coleman Shamir"
 curl -s -o ian-shamir.html https://iancoleman.io/shamir/
