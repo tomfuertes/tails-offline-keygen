@@ -53,9 +53,9 @@ wget -q --show-progress --max-redirect=20 --no-server-response --content-disposi
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/index.js
 cd ../
 
-echo "Downloading Node.js"
-curl -s -O https://nodejs.org/download/release/latest/$(curl -s https://nodejs.org/download/release/latest/ | grep -oE 'node-v[0-9]+\.[0-9]+\.[0-9]+-linux-x64\.tar\.xz' | head -n 1)
+# echo "Downloading Node.js"
+# curl -s -O https://nodejs.org/download/release/latest/$(curl -s https://nodejs.org/download/release/latest/ | grep -oE 'node-v[0-9]+\.[0-9]+\.[0-9]+-linux-x64\.tar\.xz' | head -n 1)
 
-echo "Downloading solana"
-wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/solana-labs/solana/releases/latest/download/solana-release-x86_64-unknown-linux-gnu.tar.bz2
+# echo "Downloading solana"
+# wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/solana-labs/solana/releases/latest/download/solana-release-x86_64-unknown-linux-gnu.tar.bz2
 
