@@ -1,14 +1,5 @@
 #!/usr/bin/env zsh
 
-echo "Are you CDed into the transient USB volume/directory? Type y <enter> to confirm"
-read -r answer
-if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-  echo "Continuing..."
-else
-  echo "Aborting..."
-  exit 0
-fi
-
 echo "Downloading Node.js"
 curl -s -O https://nodejs.org/download/release/latest/$(curl -s https://nodejs.org/download/release/latest/ | grep -oE 'node-v[0-9]+\.[0-9]+\.[0-9]+-linux-x64\.tar\.xz' | head -n 1)
 
