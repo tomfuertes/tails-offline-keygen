@@ -4,8 +4,8 @@ echo "Downloading Ian Coleman BIP39"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
 mv bip39-standalone.html ian-bip39.html
 
-echo "Downloading Staking CLI"
-wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/ethereum/staking-deposit-cli/releases/latest/download/staking_deposit-cli-fdab65d-linux-amd64.tar.gz
+# echo "Downloading Staking CLI"
+# wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/ethereum/staking-deposit-cli/releases/latest/download/staking_deposit-cli-fdab65d-linux-amd64.tar.gz
 
 echo "Download RocketPool"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/rocket-pool/smartnode-install/releases/latest/download/rocketpool-cli-linux-amd64
